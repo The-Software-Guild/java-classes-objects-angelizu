@@ -59,9 +59,7 @@ public class UserIOConsoleImpl implements UserIO {
         int num = 0;
         while (invalidInput){
             try {
-                // print msg
                 String stringValue = this.readString(prompt);
-                //get input line, and try and parse
                 num = Integer.parseInt(stringValue);
                 invalidInput = false;
             } catch (NumberFormatException e) {

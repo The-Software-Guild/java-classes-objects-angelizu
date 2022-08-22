@@ -12,7 +12,6 @@ public class Dvd {
     private String studio;
     private String userRating;
 
-    //might have to change to title
     public Dvd(String movieID) {
         this.movieID = movieID;
     }
