@@ -31,10 +31,10 @@ public class DvdLibraryController {
                     viewDvdInfo(); //same as view student
                     break;
                 case 4:
-                    io.print("REMOVE DVDS");
+                    removeDvd();
                     break;
                 case 5:
-                    io.print("SEARCH DVDS"); //same as view but by title
+                    searchTitle(); //same as view but by title
                     //maybe use concatenation??
                     break;
                 case 6:
@@ -72,5 +72,20 @@ public class DvdLibraryController {
         String dvdId = view.getDvdIdChoice();
         Dvd dvd = dao.getDvd(dvdId);
         view.viewDvd(dvd);
+    }
+
+    private void removeDvd() {
+        view.displayRemoveDvdBanner();
+        String movieId = view.getDvdIdChoice();
+        Dvd removedDvd = dao.removeDvd(movieId);
+        view.displayRemoveResult(removedDvd);
+    }
+
+    private void searchTitle() {
+        view.displayMovieTitleSearchBanner();
+        String dvdTitle = view.getDvdTitleSearch();
+        List<Dvd> dvd = dao.searchByTitle(dvdTitle);
+        view.displayDvdList(dvd);
+
     }
 }

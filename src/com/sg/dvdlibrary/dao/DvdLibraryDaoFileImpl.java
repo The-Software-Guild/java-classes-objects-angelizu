@@ -25,17 +25,27 @@ public class DvdLibraryDaoFileImpl implements DvdLibraryDao {
     }
 
     @Override
-    public Dvd getDvdTitle(String movieTitle) {
-        throw new UnsupportedOperationException("no support yet");
-    }
-
-    @Override
     public Dvd removeDvd(String movieId) {
-        throw new UnsupportedOperationException("no support yet");
+        Dvd removedDvd = dvds.remove(movieId);
+        return removedDvd;
     }
 
     @Override
-    public Dvd searchDvd(String movieId) {
+    public List<Dvd> searchByTitle(String movieTitle) {
+        List<Dvd> dvdList = new ArrayList<>();
+        for(Dvd dvd : dvds.values()){
+            if (dvd.getTitle().equalsIgnoreCase(movieTitle)){
+                dvdList.add(dvd);
+            }
+        }
+        return dvdList;
+    }
+
+    @Override
+    public Dvd editDvd(String movieId) {
         throw new UnsupportedOperationException("no support yet");
     }
+
+
+
 }

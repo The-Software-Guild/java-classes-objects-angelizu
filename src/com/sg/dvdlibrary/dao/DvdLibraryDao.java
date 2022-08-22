@@ -16,10 +16,10 @@ public interface DvdLibraryDao {
     Dvd getDvd(String movieId);
 
     //gets dvds linked to the title mentioned
-    Dvd getDvdTitle(String movieTitle);
+    List<Dvd> searchByTitle(String movieTitle);
 
     //removes dvd from collection with ID
     Dvd removeDvd(String movieId);
 
-    Dvd searchDvd(String movieId);
+    Dvd editDvd(String movieId);
 }

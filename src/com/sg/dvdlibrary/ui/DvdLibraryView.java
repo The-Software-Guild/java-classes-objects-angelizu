@@ -97,4 +97,31 @@ public class DvdLibraryView {
         io.readString("Please hit enter to continue.");
     }
 
+    // for removing dvd from collection
+    public void displayRemoveDvdBanner() {
+        io.print("*********REMOVE DVD FROM COLLECTION*********");
+    }
+
+    public void displayRemoveResult(Dvd dvdRecord) {
+        if(dvdRecord != null){
+            io.print("Dvd successfully removed from collection.");
+        } else {
+            io.print("Dvd does not exist.");
+        }
+        io.readString("Please hit enter to continue.");
+    }
+
+    // to search for movies by title
+    public void displayMovieTitleSearchBanner() {
+        io.print("*********SEARCH MOVIE BY TITLE*********");
+    }
+
+    public String getDvdTitleSearch() {
+        return io.readString("Enter Dvd title you want to find.");
+    }
+
+    public void searchDvdTitle() {
+        return;
+
+    }
 }
