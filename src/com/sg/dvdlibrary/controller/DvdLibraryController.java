@@ -35,7 +35,6 @@ public class DvdLibraryController {
                     break;
                 case 5:
                     searchTitle(); //same as view but by title
-                    //maybe use concatenation??
                     break;
                 case 6:
                     editDvd();
@@ -90,7 +89,7 @@ public class DvdLibraryController {
     }
 
     private void editDvd() {
-         io.print("*********EDIT DVD INFO*********");
+         view.displayEditMenuBanner();
          String dvdId = view.getDvdIdChoice();
          Dvd editChoice = dao.getDvd(dvdId);
          view.viewDvd(editChoice);
@@ -103,15 +102,18 @@ public class DvdLibraryController {
                     editReleaseDate(dvdId);
                     break;
                 case 2:
-                    io.print("edit dir");
-                    break;
-                case 3:
                     io.print("edit mpaa");
                     break;
+                case 3:
+                    io.print("edit dir");
+                    break;
                 case 4:
-                    io.print("edit rating");
+                    io.print("edit studio");
                     break;
                 case 5:
+                    io.print("edit rating");
+                    break;
+                case 6:
                     keepRunning = false;
                     break;
                 default:

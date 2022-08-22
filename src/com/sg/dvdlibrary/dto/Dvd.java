@@ -9,6 +9,7 @@ public class Dvd {
     private String releaseDate;
     private String mpaaRating; //G, PG, PG-13, R, NC-17
     private String directorName;
+    private String studio;
     private String userRating;
 
     //might have to change to title
@@ -50,6 +51,14 @@ public class Dvd {
 
     public void setDirectorName(String directorName) {
         this.directorName = directorName;
+    }
+
+    public String getStudio() {
+        return studio;
+    }
+
+    public void setStudio(String studio) {
+        this.studio = studio;
     }
 
     public String getUserRating() {
