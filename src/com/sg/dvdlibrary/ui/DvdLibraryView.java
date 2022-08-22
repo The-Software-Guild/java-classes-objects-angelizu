@@ -2,10 +2,6 @@ package com.sg.dvdlibrary.ui;
 
 import com.sg.dvdlibrary.dto.Dvd;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
 import java.util.List;
 
 public class DvdLibraryView {
@@ -191,5 +187,10 @@ public class DvdLibraryView {
 
     public void displayExitBanner() {
         io.print("Thank you for using the Dvd Collection program. Good bye!!!");
+    }
+
+    public void displayErrorMessage(String errorMsg) {
+        io.print("******ERROR!!!******");
+        io.print(errorMsg);
     }
 }
