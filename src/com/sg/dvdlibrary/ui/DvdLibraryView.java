@@ -79,4 +79,22 @@ public class DvdLibraryView {
         io.print("*********VIEW INFO ON DVD*********");
     }
 
+    public String getDvdIdChoice() {
+        return io.readString("Please enter Dvd ID");
+    }
+
+    public void viewDvd(Dvd dvd) {
+        if (dvd != null) {
+            //io.print(dvd.getMovieID());
+            io.print("Title= " + dvd.getTitle());
+            io.print("Release Date= " + dvd.getReleaseDate());
+            io.print("MPAA Rating= " + dvd.getMpaaRating());
+            io.print("Director= " + dvd.getDirectorName());
+            io.print("User Rating= " + dvd.getUserRating());
+        } else {
+            io.print("This DVD does not exist.");
+        }
+        io.readString("Please hit enter to continue.");
+    }
+
 }

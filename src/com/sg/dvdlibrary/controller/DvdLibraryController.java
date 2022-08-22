@@ -28,7 +28,7 @@ public class DvdLibraryController {
                     addDvd();
                     break;
                 case 3:
-                    io.print("VIEW INFO DVDS"); //same as view student
+                    viewDvdInfo(); //same as view student
                     break;
                 case 4:
                     io.print("REMOVE DVDS");
@@ -65,5 +65,12 @@ public class DvdLibraryController {
         view.displayShowAllDvdsBanner();
         List<Dvd> dvdList = dao.getAllDvds();
         view.displayDvdList(dvdList);
+    }
+
+    private void viewDvdInfo() {
+        view.displayViewDvdInfoBanner();
+        String dvdId = view.getDvdIdChoice();
+        Dvd dvd = dao.getDvd(dvdId);
+        view.viewDvd(dvd);
     }
 }
