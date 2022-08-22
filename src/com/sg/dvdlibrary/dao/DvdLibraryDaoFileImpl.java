@@ -16,12 +16,12 @@ public class DvdLibraryDaoFileImpl implements DvdLibraryDao {
 
     @Override
     public List<Dvd> getAllDvds() {
-        throw new UnsupportedOperationException("no support yet");
+        return new ArrayList<Dvd>(dvds.values());
     }
 
     @Override
     public Dvd getDvd(String movieId) {
-        throw new UnsupportedOperationException("no support yet");
+        return dvds.get(movieId);
     }
 
     @Override

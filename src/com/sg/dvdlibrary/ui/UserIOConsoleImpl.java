@@ -23,33 +23,34 @@ public class UserIOConsoleImpl implements UserIO {
     }
 
     @Override
-    public String checkDate(String date) {
-        boolean valid = true;
+    public String checkDate() {
+        boolean validDate = true;
         DateTimeFormatter df = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive()
                 .appendPattern("dd/MM/yyyy")
                 .toFormatter(Locale.ENGLISH);
+        Scanner scanner = new Scanner(System.in);
         LocalDate curdate = LocalDate.now();
         int curyear = curdate.getYear();
-
-        while (valid) {
+        String dateStr = null;
+        while (validDate) {
             try {
-                date = console.nextLine();
-                LocalDate ld = LocalDate.parse(date, df);
+                dateStr = scanner.nextLine();
+                LocalDate ld = LocalDate.parse(dateStr, df);
                 int year = ld.getYear();
                 if (year < 1000 || year > curyear) {
                     System.out.println("Can't insert release date year that has not occurred. Try again");
                 } else {
-
-                    //System.out.println(ld);
-                    valid = false;
+                    validDate = false;
                 }
             } catch (DateTimeParseException e) {
                 System.out.println("Incorrect date format " + e);
                 System.out.println("Please try again");
+                validDate = true;
             }
         }
-        return date;
+
+        return dateStr;
     }
 
     @Override

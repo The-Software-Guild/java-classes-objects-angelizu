@@ -4,7 +4,7 @@ public interface UserIO {
 
     String readString(String prompt);
 
-    String checkDate(String date);
+    String checkDate();
 
     void print(String msg);
 
