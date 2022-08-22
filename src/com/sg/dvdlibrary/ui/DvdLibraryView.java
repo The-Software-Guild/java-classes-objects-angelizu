@@ -25,7 +25,17 @@ public class DvdLibraryView {
 
         return io.readInt("Select one of the above " +
                 "choices.", 1, 7);
+    }
 
+    public int printEditMenu() {
+        io.print("Edit Menu");
+        io.print("1. Release Date");
+        io.print("2. Director");
+        io.print("3. MPAA Rating");
+        io.print("4. User Note");
+        io.print("5. Exit");
+
+        return io.readInt("Select one of these choices.", 1, 5);
     }
 
     // for adding new dvds
@@ -120,8 +130,15 @@ public class DvdLibraryView {
         return io.readString("Enter Dvd title you want to find.");
     }
 
-    public void searchDvdTitle() {
-        return;
-
+    //edit release date
+    public void displayEditReleaseDateBanner() {
+        io.print("*********EDIT DVD RELEASE DATE*********");
     }
+
+    public String newReleaseDate() {
+        io.print("Enter the new Release Date for the Dvd.");
+        String newDate = io.checkDate();
+        return newDate;
+    }
+
 }

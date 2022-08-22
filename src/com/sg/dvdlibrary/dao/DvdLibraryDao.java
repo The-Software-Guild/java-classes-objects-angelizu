@@ -21,5 +21,5 @@ public interface DvdLibraryDao {
     //removes dvd from collection with ID
     Dvd removeDvd(String movieId);
 
-    Dvd editDvd(String movieId);
+    Dvd editReleaseDate(String movieId, String releaseDate);
 }

@@ -38,7 +38,7 @@ public class DvdLibraryController {
                     //maybe use concatenation??
                     break;
                 case 6:
-                    io.print("EDIT DVDS");
+                    editDvd();
                     break;
                 case 7:
                     keepRunning = false;
@@ -87,5 +87,48 @@ public class DvdLibraryController {
         List<Dvd> dvd = dao.searchByTitle(dvdTitle);
         view.displayDvdList(dvd);
 
+    }
+
+    private void editDvd() {
+         io.print("*********EDIT DVD INFO*********");
+         String dvdId = view.getDvdIdChoice();
+         Dvd editChoice = dao.getDvd(dvdId);
+         view.viewDvd(editChoice);
+         int select;
+         boolean keepRunning = true;
+         while (keepRunning){
+            select = getEditMenu();
+            switch (select) {
+                case 1:
+                    editReleaseDate(dvdId);
+                    break;
+                case 2:
+                    io.print("edit dir");
+                    break;
+                case 3:
+                    io.print("edit mpaa");
+                    break;
+                case 4:
+                    io.print("edit rating");
+                    break;
+                case 5:
+                    keepRunning = false;
+                    break;
+                default:
+                    io.print("UNKNOWN COMMAND");
+            }
+
+         }
+    }
+
+    private int getEditMenu() {
+        return view.printEditMenu();
+    }
+
+    private void editReleaseDate(String dvdId) {
+        view.displayEditReleaseDateBanner();
+        String newRelease = view.newReleaseDate();
+        Dvd editDvd = dao.editReleaseDate(dvdId, newRelease);
+        view.viewDvd(editDvd);
     }
 }

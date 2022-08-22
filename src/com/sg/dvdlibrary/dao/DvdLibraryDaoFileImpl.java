@@ -31,6 +31,13 @@ public class DvdLibraryDaoFileImpl implements DvdLibraryDao {
     }
 
     @Override
+    public Dvd editReleaseDate(String movieId, String releaseDate) {
+        Dvd curDvd = dvds.get(movieId);
+        curDvd.setReleaseDate(releaseDate);
+        return curDvd;
+    }
+
+    @Override
     public List<Dvd> searchByTitle(String movieTitle) {
         List<Dvd> dvdList = new ArrayList<>();
         for(Dvd dvd : dvds.values()){
@@ -41,10 +48,6 @@ public class DvdLibraryDaoFileImpl implements DvdLibraryDao {
         return dvdList;
     }
 
-    @Override
-    public Dvd editDvd(String movieId) {
-        throw new UnsupportedOperationException("no support yet");
-    }
 
 
 
