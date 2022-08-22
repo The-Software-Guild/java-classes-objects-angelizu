@@ -10,9 +10,13 @@ import com.sg.dvdlibrary.ui.UserIOConsoleImpl;
 import java.util.List;
 
 public class DvdLibraryController {
-    private DvdLibraryView view = new DvdLibraryView();
-    private DvdLibraryDao dao = new DvdLibraryDaoFileImpl();
-    private UserIO io = new UserIOConsoleImpl();
+    private DvdLibraryView view;
+    private DvdLibraryDao dao;
+
+    public DvdLibraryController(DvdLibraryDao dao, DvdLibraryView view){
+        this.dao = dao;
+        this.view = view;
+    }
 
     public void run() {
         boolean keepRunning = true;
@@ -21,32 +25,17 @@ public class DvdLibraryController {
             menuSelection = getMenu();
 
             switch (menuSelection) {
-                case 1:
-                    listDvds();
-                    break;
-                case 2:
-                    addDvd();
-                    break;
-                case 3:
-                    viewDvdInfo(); //same as view student
-                    break;
-                case 4:
-                    removeDvd();
-                    break;
-                case 5:
-                    searchTitle(); //same as view but by title
-                    break;
-                case 6:
-                    editDvd();
-                    break;
-                case 7:
-                    keepRunning = false;
-                    break;
-                default:
-                    io.print("UNKNOWN COMMAND");
+                case 1 -> listDvds();
+                case 2 -> addDvd();
+                case 3 -> viewDvdInfo(); //same as view student
+                case 4 -> removeDvd();
+                case 5 -> searchTitle(); //same as view but by title
+                case 6 -> editDvd();
+                case 7 -> keepRunning = false;
+                default -> unknownCommand();
             }
         }
-        io.print("GOOD BYE");
+        exitMessage();
     }
 
     private int getMenu() {
@@ -97,29 +86,15 @@ public class DvdLibraryController {
          boolean keepRunning = true;
          while (keepRunning){
             select = getEditMenu();
-            switch (select) {
-                case 1:
-                    editReleaseDate(dvdId);
-                    break;
-                case 2:
-                    editMpaaRating(dvdId);
-                    break;
-                case 3:
-                    editDirector(dvdId);
-                    break;
-                case 4:
-                    io.print("edit studio");
-                    break;
-                case 5:
-                    io.print("edit rating");
-                    break;
-                case 6:
-                    keepRunning = false;
-                    break;
-                default:
-                    io.print("UNKNOWN COMMAND");
-            }
-
+             switch (select) {
+                 case 1 -> editReleaseDate(dvdId);
+                 case 2 -> editMpaaRating(dvdId);
+                 case 3 -> editDirector(dvdId);
+                 case 4 -> editStudio(dvdId);
+                 case 5 -> editNoteRating(dvdId);
+                 case 6 -> keepRunning = false;
+                 default -> unknownCommand();
+             }
          }
     }
 
@@ -141,12 +116,33 @@ public class DvdLibraryController {
         view.viewDvd(editDvd);
     }
 
-
     private void editDirector(String dvdId){
         view.displayEditDirectorBanner();
         String dir = view.getDirectorName();
         Dvd editDvd = dao.editDirector(dvdId, dir);
+        view.viewDvd(editDvd);
     }
 
+    private void editStudio(String dvdId) {
+        view.displayEditStudioBanner();
+        String studio = view.getStudioName();
+        Dvd editDvd = dao.editStudio(dvdId, studio);
+        view.viewDvd(editDvd);
+    }
+
+    private void editNoteRating(String dvdId) {
+        view.displayEditUserNoteBanner();
+        String note = view.getUserRating();
+        Dvd editDvd = dao.editUserNote(dvdId, note);
+        view.viewDvd(editDvd);
+    }
+
+    private void unknownCommand() {
+        view.displayUnknownCommandBanner();
+    }
+
+    private void exitMessage() {
+        view.displayExitBanner();
+    }
 
 }

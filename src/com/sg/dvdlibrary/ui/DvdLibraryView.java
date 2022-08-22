@@ -10,8 +10,11 @@ import java.util.List;
 
 public class DvdLibraryView {
 
-    private UserIO io = new UserIOConsoleImpl();
-    static boolean valid = false;
+    private UserIO io;
+
+    public DvdLibraryView(UserIO io) {
+        this.io = io;
+    }
 
     public int printDvdMenu() {
         io.print("*********MAIN MENU*********");
@@ -69,8 +72,8 @@ public class DvdLibraryView {
     //for listing all dvds
     public void displayDvdList(List<Dvd> dvdList) {
         for(Dvd currentDvd : dvdList) {
-            String dvdInfo = String.format("%s : Title= %s Release Date= %s " +
-                            "MPAA RATING= %s Director= %s Studio= %s User Rating= %s",
+            String dvdInfo = String.format("%s :Title= %s |Release Date= %s " +
+                            "|MPAA RATING= %s%n Director= %s |Studio= %s |User Rating= %s",
                     currentDvd.getMovieID(),
                     currentDvd.getTitle(),
                     currentDvd.getReleaseDate(),
@@ -179,5 +182,14 @@ public class DvdLibraryView {
 
     public String getUserRating() {
         return io.readString("Enter the new User Note/Rating.");
+    }
+
+    //exit and unknown
+    public void displayUnknownCommandBanner(){
+        io.print("Unknown Command!");
+    }
+
+    public void displayExitBanner() {
+        io.print("Thank you for using the Dvd Collection program. Good bye!!!");
     }
 }
