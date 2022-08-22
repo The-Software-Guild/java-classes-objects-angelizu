@@ -52,28 +52,28 @@ public class DvdLibraryDaoFileImpl implements DvdLibraryDao {
     @Override
     public Dvd editMPAA(String dvdId, String mRating) {
         Dvd curDvd = dvds.get(dvdId);
-        curDvd.setReleaseDate(mRating);
+        curDvd.setMpaaRating(mRating);
         return curDvd;
     }
 
     @Override
     public Dvd editDirector(String dvdId, String director) {
         Dvd curDvd = dvds.get(dvdId);
-        curDvd.setReleaseDate(director);
+        curDvd.setDirectorName(director);
         return curDvd;
     }
 
     @Override
     public Dvd editStudio(String dvdId, String studio) {
         Dvd curDvd = dvds.get(dvdId);
-        curDvd.setReleaseDate(studio);
+        curDvd.setStudio(studio);
         return curDvd;
     }
 
     @Override
     public Dvd editUserNote(String dvdId, String userNote) {
         Dvd curDvd = dvds.get(dvdId);
-        curDvd.setReleaseDate(userNote);
+        curDvd.setUserRating(userNote);
         return curDvd;
     }
 

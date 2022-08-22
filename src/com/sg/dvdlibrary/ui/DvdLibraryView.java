@@ -134,6 +134,10 @@ public class DvdLibraryView {
         return io.readString("Enter Dvd title you want to find.");
     }
 
+    public void displayEditMenuBanner() {
+        io.print("*********EDIT MENU*********");
+    }
+
     //edit release date
     public void displayEditReleaseDateBanner() {
         io.print("*********EDIT DVD RELEASE DATE*********");
@@ -145,23 +149,35 @@ public class DvdLibraryView {
         return newDate;
     }
 
-    public void displayEditMenuBanner() {
-        io.print("*********EDIT MENU*********");
-    }
-
     public void displayEditMpaaRatingBanner() {
         io.print("*********EDIT MPAA RATING*********");
     }
 
+    public String getMpaaRating() {
+        return io.readString("Enter the new MPAA rating.");
+    }
+
     public void displayEditDirectorBanner() {
-        io.print("*********EDIT EDITOR'S NAME*********");
+        io.print("*********EDIT DIRECTOR'S NAME*********");
+    }
+
+    public String getDirectorName() {
+        return io.readString("Enter the name of the new Director.");
     }
 
     public void displayEditStudioBanner() {
         io.print("*********EDIT STUDIO NAME*********");
     }
 
+    public String getStudioName() {
+        return io.readString("Enter the new Studio name.");
+    }
+
     public void displayEditUserNoteBanner() {
         io.print("*********EDIT USER NOTE/RATING*********");
+    }
+
+    public String getUserRating() {
+        return io.readString("Enter the new User Note/Rating.");
     }
 }

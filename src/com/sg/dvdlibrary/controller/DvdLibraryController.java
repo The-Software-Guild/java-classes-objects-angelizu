@@ -102,10 +102,10 @@ public class DvdLibraryController {
                     editReleaseDate(dvdId);
                     break;
                 case 2:
-                    io.print("edit mpaa");
+                    editMpaaRating(dvdId);
                     break;
                 case 3:
-                    io.print("edit dir");
+                    editDirector(dvdId);
                     break;
                 case 4:
                     io.print("edit studio");
@@ -133,4 +133,20 @@ public class DvdLibraryController {
         Dvd editDvd = dao.editReleaseDate(dvdId, newRelease);
         view.viewDvd(editDvd);
     }
+
+    private void editMpaaRating(String dvdId) {
+        view.displayEditMpaaRatingBanner();
+        String newMRating = view.getMpaaRating();
+        Dvd editDvd = dao.editMPAA(dvdId, newMRating);
+        view.viewDvd(editDvd);
+    }
+
+
+    private void editDirector(String dvdId){
+        view.displayEditDirectorBanner();
+        String dir = view.getDirectorName();
+        Dvd editDvd = dao.editDirector(dvdId, dir);
+    }
+
+
 }

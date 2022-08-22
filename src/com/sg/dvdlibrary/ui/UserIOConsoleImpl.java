@@ -139,4 +139,5 @@ public class UserIOConsoleImpl implements UserIO {
         } while (result < min || result > max);
         return result;
     }
+
 }
