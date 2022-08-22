@@ -1,11 +1,15 @@
 package com.sg.dvdlibrary.controller;
 
+import com.sg.dvdlibrary.dao.DvdLibraryDao;
+import com.sg.dvdlibrary.dao.DvdLibraryDaoFileImpl;
+import com.sg.dvdlibrary.dto.Dvd;
 import com.sg.dvdlibrary.ui.DvdLibraryView;
 import com.sg.dvdlibrary.ui.UserIO;
 import com.sg.dvdlibrary.ui.UserIOConsoleImpl;
 
 public class DvdLibraryController {
     private DvdLibraryView view = new DvdLibraryView();
+    private DvdLibraryDao dao = new DvdLibraryDaoFileImpl();
     private UserIO io = new UserIOConsoleImpl();
 
     public void run() {
@@ -19,7 +23,7 @@ public class DvdLibraryController {
                     io.print("LIST DVDS");
                     break;
                 case 2:
-                    io.print("ADD DVDS");
+                    addDvd();
                     break;
                 case 3:
                     io.print("VIEW INFO DVDS"); //same as view student
@@ -46,5 +50,12 @@ public class DvdLibraryController {
 
     private int getMenu() {
         return view.printDvdMenu();
+    }
+
+    private void addDvd() {
+        view.displayAddDvdBanner();
+        Dvd newDvd = view.getNewDvdInfo();
+        dao.addDvd(newDvd.getMovieID(), newDvd);
+        view.displaySuccessAddDvdBanner();
     }
 }

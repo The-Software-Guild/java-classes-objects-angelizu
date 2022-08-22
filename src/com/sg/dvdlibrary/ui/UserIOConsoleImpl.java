@@ -1,5 +1,10 @@
 package com.sg.dvdlibrary.ui;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class UserIOConsoleImpl implements UserIO {
@@ -15,6 +20,36 @@ public class UserIOConsoleImpl implements UserIO {
     public String readString(String prompt) {
         System.out.println(prompt);
         return console.nextLine();
+    }
+
+    @Override
+    public String checkDate(String date) {
+        boolean valid = true;
+        DateTimeFormatter df = new DateTimeFormatterBuilder()
+                .parseCaseInsensitive()
+                .appendPattern("dd/MM/yyyy")
+                .toFormatter(Locale.ENGLISH);
+        LocalDate curdate = LocalDate.now();
+        int curyear = curdate.getYear();
+
+        while (valid) {
+            try {
+                date = console.nextLine();
+                LocalDate ld = LocalDate.parse(date, df);
+                int year = ld.getYear();
+                if (year < 1000 || year > curyear) {
+                    System.out.println("Can't insert release date year that has not occurred. Try again");
+                } else {
+
+                    //System.out.println(ld);
+                    valid = false;
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("Incorrect date format " + e);
+                System.out.println("Please try again");
+            }
+        }
+        return date;
     }
 
     @Override

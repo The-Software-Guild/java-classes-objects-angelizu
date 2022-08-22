@@ -2,9 +2,15 @@ package com.sg.dvdlibrary.ui;
 
 import com.sg.dvdlibrary.dto.Dvd;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+
 public class DvdLibraryView {
 
     private UserIO io = new UserIOConsoleImpl();
+    static boolean valid = false;
 
     public int printDvdMenu() {
         io.print("Main Menu");
@@ -25,12 +31,13 @@ public class DvdLibraryView {
         String dvdId = io.readString("Please enter Dvd Code");
         String dvdTitle = io.readString("Please enter Dvd Title");
         String releaseDate = io.readString("Please enter Dvd Release Date DD/MM/YYYY format");
+        String checkDate = io.checkDate(releaseDate);
         String mpaaRating = io.readString("Please enter MPAA Rating");
         String directorName = io.readString("Please enter Director Name");
         String userRating = io.readString("Please enter Your Rating/Note on the Dvd");
         Dvd currentDvd = new Dvd(dvdId);
         currentDvd.setTitle(dvdTitle);
-        currentDvd.setReleaseDate(releaseDate);
+        currentDvd.setReleaseDate(checkDate);
         currentDvd.setMpaaRating(mpaaRating);
         currentDvd.setDirectorName(directorName);
         currentDvd.setUserRating(userRating);
@@ -44,6 +51,8 @@ public class DvdLibraryView {
     public void displaySuccessAddDvdBanner(){
         io.readString("Dvd successfully added to collection. Please hit enter to continue");
     }
+
+
 
 
 }
