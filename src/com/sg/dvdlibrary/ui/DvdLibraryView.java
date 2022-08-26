@@ -43,7 +43,8 @@ public class DvdLibraryView {
         String dvdTitle = io.readString("Please enter Dvd Title");
         io.print("Please enter Dvd Release Date DD/MM/YYYY format");
         String releaseDate = io.checkDate();
-        String mpaaRating = io.readString("Please enter MPAA Rating");
+        io.print("Please enter MPAA Rating - Only input G, PG, PG-13, R, NC-17");
+        String mpaaRating = io.checkMPAA();
         String directorName = io.readString("Please enter Director Name");
         String studio = io.readString("Please enter Studio name");
         String userRating = io.readString("Please enter Your Rating/Note on the Dvd");
@@ -68,18 +69,24 @@ public class DvdLibraryView {
     //for listing all dvds
     public void displayDvdList(List<Dvd> dvdList) {
         for(Dvd currentDvd : dvdList) {
-            String dvdInfo = String.format("%s :Title= %s |Release Date= %s " +
-                            "|MPAA RATING= %s%n Director= %s |Studio= %s |User Rating= %s",
-                    currentDvd.getMovieID(),
-                    currentDvd.getTitle(),
-                    currentDvd.getReleaseDate(),
-                    currentDvd.getMpaaRating(),
-                    currentDvd.getDirectorName(),
-                    currentDvd.getStudio(),
-                    currentDvd.getUserRating());
-            io.print(dvdInfo);
+            io.print(displayDvdInfoFormat(currentDvd));
         }
         io.readString("Please hit enter to continue");
+    }
+
+    public String displayDvdInfoFormat(Dvd dvd) {
+        String dvdInfo = String.format("%s :%nTitle= %s%nRelease Date= %s%n" +
+                        "MPAA RATING= %s%nDirector= %s%nStudio= %s%nUser Rating= %s%n",
+                dvd.getMovieID(),
+                dvd.getTitle(),
+                dvd.getReleaseDate(),
+                dvd.getMpaaRating(),
+                dvd.getDirectorName(),
+                dvd.getStudio(),
+                dvd.getUserRating());
+
+        return dvdInfo;
+
     }
 
     public void displayShowAllDvdsBanner() {
@@ -97,13 +104,7 @@ public class DvdLibraryView {
 
     public void viewDvd(Dvd dvd) {
         if (dvd != null) {
-            //io.print(dvd.getMovieID());
-            io.print("Title= " + dvd.getTitle());
-            io.print("Release Date= " + dvd.getReleaseDate());
-            io.print("MPAA Rating= " + dvd.getMpaaRating());
-            io.print("Director= " + dvd.getDirectorName());
-            io.print("Studio= "+ dvd.getStudio());
-            io.print("User Rating= " + dvd.getUserRating());
+            io.print(displayDvdInfoFormat(dvd));
         } else {
             io.print("This DVD does not exist.");
         }
@@ -153,7 +154,9 @@ public class DvdLibraryView {
     }
 
     public String getMpaaRating() {
-        return io.readString("Enter the new MPAA rating.");
+        io.print("Enter the new MPAA rating.");
+        String newRate = io.checkMPAA();
+        return newRate;
     }
 
     public void displayEditDirectorBanner() {

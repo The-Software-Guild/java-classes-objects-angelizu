@@ -6,6 +6,8 @@ public interface UserIO {
 
     String checkDate();
 
+    String checkMPAA();
+
     void print(String msg);
 
     int readInt(String prompt);

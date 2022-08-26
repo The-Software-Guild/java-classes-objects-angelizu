@@ -1,18 +1,21 @@
 package com.sg.dvdlibrary.controller;
 
 import com.sg.dvdlibrary.dao.DvdLibraryDao;
-import com.sg.dvdlibrary.dao.DvdLibraryDaoException;
+import com.sg.dvdlibrary.dao.DvdLibraryPersistenceException;
 import com.sg.dvdlibrary.dto.Dvd;
+import com.sg.dvdlibrary.service.DvdLibraryDataValidationException;
+import com.sg.dvdlibrary.service.DvdLibraryDuplicateIdException;
+import com.sg.dvdlibrary.service.DvdLibraryServiceLayer;
 import com.sg.dvdlibrary.ui.DvdLibraryView;
 
 import java.util.List;
 
 public class DvdLibraryController {
     private DvdLibraryView view;
-    private DvdLibraryDao dao;
+    private DvdLibraryServiceLayer service;
 
-    public DvdLibraryController(DvdLibraryDao dao, DvdLibraryView view){
-        this.dao = dao;
+    public DvdLibraryController(DvdLibraryServiceLayer service, DvdLibraryView view){
+        this.service = service;
         this.view = view;
     }
 
@@ -35,7 +38,7 @@ public class DvdLibraryController {
                 }
             }
             exitMessage();
-        } catch (DvdLibraryDaoException e) {
+        } catch (DvdLibraryPersistenceException e) {
             view.displayErrorMessage(e.getMessage());
         }
     }
@@ -44,60 +47,73 @@ public class DvdLibraryController {
         return view.printDvdMenu();
     }
 
-    private void addDvd() throws DvdLibraryDaoException {
+    private void addDvd() throws DvdLibraryPersistenceException {
         view.displayAddDvdBanner();
-        Dvd newDvd = view.getNewDvdInfo();
-        dao.addDvd(newDvd.getMovieID(), newDvd);
-        view.displaySuccessAddDvdBanner();
+        boolean hasErrors = false;
+        do {
+            Dvd currentDvd = view.getNewDvdInfo();
+            try {
+                service.createDvd(currentDvd);
+                view.displaySuccessAddDvdBanner();
+                hasErrors = false;
+            } catch (DvdLibraryDuplicateIdException | DvdLibraryDataValidationException e) {
+                hasErrors = true;
+                view.displayErrorMessage(e.getMessage());
+            }
+        } while (hasErrors);
     }
 
-    private void listDvds() throws DvdLibraryDaoException {
+    private void listDvds() throws DvdLibraryPersistenceException {
         view.displayShowAllDvdsBanner();
-        List<Dvd> dvdList = dao.getAllDvds();
+        List<Dvd> dvdList = service.getAllDvds();
         view.displayDvdList(dvdList);
     }
 
-    private void viewDvdInfo() throws DvdLibraryDaoException {
+    private void viewDvdInfo() throws DvdLibraryPersistenceException {
         view.displayViewDvdInfoBanner();
         String dvdId = view.getDvdIdChoice();
-        Dvd dvd = dao.getDvd(dvdId);
+        Dvd dvd = service.getDvd(dvdId);
         view.viewDvd(dvd);
     }
 
-    private void removeDvd() throws DvdLibraryDaoException {
+    private void removeDvd() throws DvdLibraryPersistenceException {
         view.displayRemoveDvdBanner();
         String movieId = view.getDvdIdChoice();
-        Dvd removedDvd = dao.removeDvd(movieId);
+        Dvd removedDvd = service.removeDvd(movieId);
         view.displayRemoveResult(removedDvd);
     }
 
-    private void searchTitle() throws DvdLibraryDaoException {
+    private void searchTitle() throws DvdLibraryPersistenceException {
         view.displayMovieTitleSearchBanner();
         String dvdTitle = view.getDvdTitleSearch();
-        List<Dvd> dvd = dao.searchByTitle(dvdTitle);
+        List<Dvd> dvd = service.searchByTitle(dvdTitle);
         view.displayDvdList(dvd);
 
     }
 
-    private void editDvd() throws DvdLibraryDaoException {
-         view.displayEditMenuBanner();
-         String dvdId = view.getDvdIdChoice();
-         Dvd editChoice = dao.getDvd(dvdId);
-         view.viewDvd(editChoice);
-         int select;
-         boolean keepRunning = true;
-         while (keepRunning){
-            select = getEditMenu();
-             switch (select) {
-                 case 1 -> editReleaseDate(dvdId);
-                 case 2 -> editMpaaRating(dvdId);
-                 case 3 -> editDirector(dvdId);
-                 case 4 -> editStudio(dvdId);
-                 case 5 -> editNoteRating(dvdId);
-                 case 6 -> keepRunning = false;
-                 default -> unknownCommand();
-             }
-         }
+    private void editDvd() throws DvdLibraryPersistenceException {
+        view.displayEditMenuBanner();
+        String dvdId = view.getDvdIdChoice();
+        Dvd editChoice = service.getDvd(dvdId);
+        view.viewDvd(editChoice);
+        int select;
+        boolean keepRunning = true;
+        try {
+            while (keepRunning) {
+                select = getEditMenu();
+                switch (select) {
+                    case 1 -> editReleaseDate(dvdId);
+                    case 2 -> editMpaaRating(dvdId);
+                    case 3 -> editDirector(dvdId);
+                    case 4 -> editStudio(dvdId);
+                    case 5 -> editNoteRating(dvdId);
+                    case 6 -> keepRunning = false;
+                    default -> unknownCommand();
+                }
+            }
+        } catch (DvdLibraryPersistenceException e) {
+            view.displayErrorMessage(e.getMessage());
+        }
     }
 
     //add null exceptions
@@ -106,42 +122,42 @@ public class DvdLibraryController {
     }
 
     private void editReleaseDate(String dvdId)
-            throws DvdLibraryDaoException {
+            throws DvdLibraryPersistenceException {
         view.displayEditReleaseDateBanner();
         String newRelease = view.newReleaseDate();
-        Dvd editDvd = dao.editReleaseDate(dvdId, newRelease);
+        Dvd editDvd = service.editReleaseDate(dvdId, newRelease);
         view.viewDvd(editDvd);
     }
 
     private void editMpaaRating(String dvdId)
-            throws DvdLibraryDaoException {
+            throws DvdLibraryPersistenceException {
         view.displayEditMpaaRatingBanner();
         String newMRating = view.getMpaaRating();
-        Dvd editDvd = dao.editMPAA(dvdId, newMRating);
+        Dvd editDvd = service.editMPAA(dvdId, newMRating);
         view.viewDvd(editDvd);
     }
 
     private void editDirector(String dvdId)
-            throws DvdLibraryDaoException {
+            throws DvdLibraryPersistenceException {
         view.displayEditDirectorBanner();
         String dir = view.getDirectorName();
-        Dvd editDvd = dao.editDirector(dvdId, dir);
+        Dvd editDvd = service.editDirector(dvdId, dir);
         view.viewDvd(editDvd);
     }
 
     private void editStudio(String dvdId)
-            throws DvdLibraryDaoException {
+            throws DvdLibraryPersistenceException {
         view.displayEditStudioBanner();
         String studio = view.getStudioName();
-        Dvd editDvd = dao.editStudio(dvdId, studio);
+        Dvd editDvd = service.editStudio(dvdId, studio);
         view.viewDvd(editDvd);
     }
 
     private void editNoteRating(String dvdId)
-            throws DvdLibraryDaoException {
+            throws DvdLibraryPersistenceException {
         view.displayEditUserNoteBanner();
         String note = view.getUserRating();
-        Dvd editDvd = dao.editUserNote(dvdId, note);
+        Dvd editDvd = service.editUserNote(dvdId, note);
         view.viewDvd(editDvd);
     }
 

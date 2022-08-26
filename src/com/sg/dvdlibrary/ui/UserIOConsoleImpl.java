@@ -4,8 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class UserIOConsoleImpl implements UserIO {
 
@@ -49,8 +48,35 @@ public class UserIOConsoleImpl implements UserIO {
                 validDate = true;
             }
         }
-
         return dateStr;
+    }
+
+    @Override
+    public String checkMPAA() {
+        boolean validMpaa = true;
+        List<String> rating = new ArrayList<>(Arrays.asList("G", "PG", "PG-13", "R", "NC-17"));
+        Scanner scanner = new Scanner(System.in);
+        //G, PG, PG-13, R, NC-17
+        String mpaaR;
+        String upperCase = null;
+        while (validMpaa) {
+            try {
+                mpaaR = scanner.nextLine();
+                if (mpaaR.equalsIgnoreCase(rating.get(0)) ||
+                        mpaaR.equalsIgnoreCase(rating.get(1)) ||
+                        mpaaR.equalsIgnoreCase(rating.get(2)) ||
+                        mpaaR.equalsIgnoreCase(rating.get(3)) ||
+                        mpaaR.equalsIgnoreCase(rating.get(4))){
+                    upperCase = mpaaR.toUpperCase();
+                    validMpaa = false;
+                } else {
+                    System.out.println("Only input the following: G, PG, PG-13, R, NC-17");
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+        return upperCase;
     }
 
     @Override
@@ -137,5 +163,4 @@ public class UserIOConsoleImpl implements UserIO {
         } while (result < min || result > max);
         return result;
     }
-
 }
