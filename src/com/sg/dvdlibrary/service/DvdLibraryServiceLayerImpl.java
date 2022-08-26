@@ -1,5 +1,6 @@
 package com.sg.dvdlibrary.service;
 
+import com.sg.dvdlibrary.dao.DvdLibraryAuditDao;
 import com.sg.dvdlibrary.dao.DvdLibraryDao;
 import com.sg.dvdlibrary.dao.DvdLibraryPersistenceException;
 import com.sg.dvdlibrary.dto.Dvd;
@@ -10,8 +11,11 @@ public class DvdLibraryServiceLayerImpl implements DvdLibraryServiceLayer {
 
     DvdLibraryDao dao;
 
-    public DvdLibraryServiceLayerImpl(DvdLibraryDao dao) {
+    private DvdLibraryAuditDao auditDao;
+
+    public DvdLibraryServiceLayerImpl(DvdLibraryDao dao, DvdLibraryAuditDao auditDao) {
         this.dao = dao;
+        this.auditDao = auditDao;
     }
     @Override
     public void createDvd(Dvd dvd) throws
@@ -33,8 +37,11 @@ public class DvdLibraryServiceLayerImpl implements DvdLibraryServiceLayer {
         validateDvdData(dvd);
 
         // We passed all our business rules checks so go ahead
-        // and persist the Student object
+        // and persist the dvd object
         dao.addDvd(dvd.getMovieID(), dvd);
+
+        // The student was successfully created, now write to the audit log
+        auditDao.writeAuditEntry("Dvd " + dvd.getMovieID() + " CREATED.");
     }
 
     @Override
@@ -49,7 +56,10 @@ public class DvdLibraryServiceLayerImpl implements DvdLibraryServiceLayer {
 
     @Override
     public Dvd removeDvd(String dvdId) throws DvdLibraryPersistenceException {
-        return dao.removeDvd(dvdId);
+        Dvd removedDvd = dao.removeDvd(dvdId);
+        // Write to audit log
+        auditDao.writeAuditEntry("Dvd " + dvdId + " REMOVED.");
+        return removedDvd;
     }
 
     private void validateDvdData(Dvd dvd) throws DvdLibraryDataValidationException {
@@ -79,26 +89,37 @@ public class DvdLibraryServiceLayerImpl implements DvdLibraryServiceLayer {
 
     @Override
     public Dvd editReleaseDate(String dvdId, String releaseDate) throws DvdLibraryPersistenceException {
-        return dao.editReleaseDate(dvdId, releaseDate);
+        Dvd editDate = dao.editReleaseDate(dvdId, releaseDate);
+        // Write to audit log
+        auditDao.writeAuditEntry("Dvd " + dvdId + " Release Date EDITED");
+        return editDate;
     }
 
     @Override
     public Dvd editMPAA(String dvdId, String mRating) throws DvdLibraryPersistenceException {
-        return dao.editMPAA(dvdId, mRating);
+        Dvd editRate = dao.editMPAA(dvdId, mRating);
+        auditDao.writeAuditEntry("Dvd " + dvdId + " MPAA Rating EDITED");
+        return editRate;
     }
 
     @Override
     public Dvd editDirector(String dvdId, String director) throws DvdLibraryPersistenceException {
-        return dao.editDirector(dvdId, director);
+        Dvd editDir = dao.editDirector(dvdId, director);
+        auditDao.writeAuditEntry("Dvd " + dvdId + " Director EDITED");
+        return editDir;
     }
 
     @Override
     public Dvd editStudio(String dvdId, String studio) throws DvdLibraryPersistenceException {
-        return dao.editStudio(dvdId, studio);
+        Dvd editStudio = dao.editStudio(dvdId, studio);
+        auditDao.writeAuditEntry("Dvd " + dvdId + " Studio EDITED");
+        return editStudio;
     }
 
     @Override
     public Dvd editUserNote(String dvdId, String userNote) throws DvdLibraryPersistenceException {
-        return dao.editUserNote(dvdId, userNote);
+        Dvd editNote = dao.editUserNote(dvdId, userNote);
+        auditDao.writeAuditEntry("Dvd " + dvdId + " User Note EDITED");
+        return editNote;
     }
 }
