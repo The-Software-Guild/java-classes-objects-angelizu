@@ -12,6 +12,8 @@ public class Dvd {
     private String studio;
     private String userRating;
 
+    //could have added other constructors as well to make it more neat
+    // like String movieTitle, etc...
     public Dvd(String movieID) {
         this.movieID = movieID;
     }

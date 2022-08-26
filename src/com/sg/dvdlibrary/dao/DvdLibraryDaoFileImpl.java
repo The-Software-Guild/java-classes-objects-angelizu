@@ -135,7 +135,6 @@ public class DvdLibraryDaoFileImpl implements DvdLibraryDao {
 
             dvds.put(currentDvd.getMovieID(), currentDvd);
         }
-
         scanner.close();
     }
 
@@ -166,9 +165,8 @@ public class DvdLibraryDaoFileImpl implements DvdLibraryDao {
         for (Dvd currentDvd : dvdList) {
             dvdAsText = marshallDvd(currentDvd);
             out.println(dvdAsText);
-            out.flush();
+            out.flush(); //better put flush after the end of loop - costly operation
         }
         out.close();
     }
-
 }

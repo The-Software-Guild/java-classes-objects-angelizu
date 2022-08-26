@@ -39,7 +39,7 @@ public class DvdLibraryController {
             view.displayErrorMessage(e.getMessage());
         }
     }
-
+    // make sure method name are very clear, like printdvdandslection
     private int getMenu() {
         return view.printDvdMenu();
     }
@@ -100,6 +100,7 @@ public class DvdLibraryController {
          }
     }
 
+    //add null exceptions
     private int getEditMenu() {
         return view.printEditMenu();
     }
