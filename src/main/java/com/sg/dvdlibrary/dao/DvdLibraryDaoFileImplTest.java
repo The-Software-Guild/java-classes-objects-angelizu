@@ -4,6 +4,7 @@ import com.sg.dvdlibrary.dto.Dvd;
 import org.junit.jupiter.api.*;
 
 import java.io.FileWriter;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -82,4 +83,100 @@ class DvdLibraryDaoFileImplTest {
                 "Checking dvd user note.");
 
     }
+
+    @Test
+    public void testAddGetAllDvds() throws Exception {
+        // create first dvd
+        Dvd firstDvd = new Dvd("0001");
+        firstDvd.setTitle("Iron Man");
+        firstDvd.setReleaseDate("02/05/2008");
+        firstDvd.setMpaaRating("PG-13");
+        firstDvd.setDirectorName("Jon Favreau");
+        firstDvd.setStudio("Marvel");
+        firstDvd.setUserRating("I enjoyed it");
+
+        // create second dvd
+        Dvd secondDvd = new Dvd("0002");
+        secondDvd.setTitle("The Proposal");
+        secondDvd.setReleaseDate("22/07/2009");
+        secondDvd.setMpaaRating("PG-13");
+        secondDvd.setDirectorName("Anne Fletcher");
+        secondDvd.setStudio("Walt Disney");
+        secondDvd.setUserRating("Favourite romance movie!");
+
+        // Add both the dvds to the DAO
+        testDao.addDvd(firstDvd.getMovieID(), firstDvd);
+        testDao.addDvd(secondDvd.getMovieID(), secondDvd);
+
+        // Retrieve the list of all dvds within the DAO
+        List<Dvd> allDvds = testDao.getAllDvds();
+
+        // First check the general contents of the list
+        assertNotNull(allDvds, "The list of dvds must not be null");
+        assertEquals(2, allDvds.size(), "List of all dvds should have 2 dvds");
+
+        // Then the specifics
+        assertTrue(testDao.getAllDvds().contains(firstDvd), "The list of dvds should include Iron Man");
+        assertTrue(testDao.getAllDvds().contains(secondDvd), "The list of dvds should include The Proposal");
+    }
+
+    @Test
+    public void testRemoveDvd() throws Exception {
+        // create two new dvds
+        Dvd firstDvd = new Dvd("0001");
+        firstDvd.setTitle("Iron Man");
+        firstDvd.setReleaseDate("02/05/2008");
+        firstDvd.setMpaaRating("PG-13");
+        firstDvd.setDirectorName("Jon Favreau");
+        firstDvd.setStudio("Marvel");
+        firstDvd.setUserRating("I enjoyed it");
+
+        Dvd secondDvd = new Dvd("0002");
+        secondDvd.setTitle("The Proposal");
+        secondDvd.setReleaseDate("22/07/2009");
+        secondDvd.setMpaaRating("PG-13");
+        secondDvd.setDirectorName("Anne Fletcher");
+        secondDvd.setStudio("Walt Disney");
+        secondDvd.setUserRating("Favourite romance movie!");
+
+        // add both to dao
+        testDao.addDvd(firstDvd.getMovieID(), firstDvd);
+        testDao.addDvd(secondDvd.getMovieID(), secondDvd);
+
+        //remove first dvd - iron man
+        Dvd removedDvd = testDao.removeDvd(firstDvd.getMovieID());
+
+        // Check that the correct object was removed.
+        assertEquals(removedDvd, firstDvd, "The removed dvd should be Iron Man");
+
+        // get all dvds
+        List<Dvd> allDvds = testDao.getAllDvds();
+
+        // first check the general contents of list
+        assertNotNull(allDvds, "All dvds list should not be null");
+        assertEquals(1, allDvds.size(), "All dvds should only have 1 dvd");
+
+        //then specifics
+        assertFalse(allDvds.contains(firstDvd), "All dvds should NOT include Iron Man");
+        assertTrue(allDvds.contains(secondDvd), "All dvds should include The Proposal");
+
+        // removed the second student
+        removedDvd = testDao.removeDvd(secondDvd.getMovieID());
+        // check correct obj was removed
+        assertEquals(removedDvd, secondDvd, "The removed dvd should be The Proposal");
+
+        //retrieve all students again and check list
+        allDvds = testDao.getAllDvds();
+        //check contents of list - should be empty
+        assertTrue(allDvds.isEmpty(), "The retrieved list of dvd should be empty");
+
+        // try to get both dvds by their old id - should be null
+        Dvd retrievedDvd = testDao.getDvd(firstDvd.getMovieID());
+        assertNull(retrievedDvd, "Iron Man was removed, should be null");
+
+        retrievedDvd = testDao.getDvd(secondDvd.getMovieID());
+        assertNull(retrievedDvd, "The Proposal was removed, should be null");
+    }
+
+    
 }
