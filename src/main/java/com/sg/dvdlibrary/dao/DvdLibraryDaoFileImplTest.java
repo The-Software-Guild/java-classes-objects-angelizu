@@ -4,6 +4,7 @@ import com.sg.dvdlibrary.dto.Dvd;
 import org.junit.jupiter.api.*;
 
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -178,5 +179,48 @@ class DvdLibraryDaoFileImplTest {
         assertNull(retrievedDvd, "The Proposal was removed, should be null");
     }
 
-    
+
+    @Test
+    public void testSearchTitle() throws Exception {
+        Dvd firstDvd = new Dvd("0001");
+        firstDvd.setTitle("Iron Man");
+        firstDvd.setReleaseDate("02/05/2008");
+        firstDvd.setMpaaRating("PG-13");
+        firstDvd.setDirectorName("Jon Favreau");
+        firstDvd.setStudio("Marvel");
+        firstDvd.setUserRating("I enjoyed it");
+
+        testDao.addDvd(firstDvd.getMovieID(), firstDvd);
+
+        List<Dvd> allDvds = testDao.getAllDvds();
+        assertNotNull(allDvds, "All dvds list should not be null");
+
+        List<Dvd> searchDvd = testDao.searchByTitle("iron man");
+        List<Dvd> newDvd = new ArrayList<>();
+        newDvd.add(firstDvd);
+
+        assertEquals(searchDvd, newDvd, "Title is the same");
+    }
+
+    @Test
+    public void testEditRelease() throws Exception {
+        Dvd firstDvd = new Dvd("0001");
+        firstDvd.setTitle("Iron Man");
+        firstDvd.setReleaseDate("02/05/2008");
+        firstDvd.setMpaaRating("PG-13");
+        firstDvd.setDirectorName("Jon Favreau");
+        firstDvd.setStudio("Marvel");
+        firstDvd.setUserRating("I enjoyed it");
+
+        testDao.addDvd(firstDvd.getMovieID(), firstDvd);
+
+        List<Dvd> allDvds = testDao.getAllDvds();
+        assertNotNull(allDvds, "All dvds list should not be null");
+
+        Dvd editDate = testDao.editReleaseDate(firstDvd.getMovieID(), "12/05/2008");
+        Dvd newDvd = testDao.getDvd(editDate.getMovieID());
+
+        assertNotEquals(newDvd.getReleaseDate(), firstDvd.getReleaseDate(),"not equal");
+    }
+
 }
